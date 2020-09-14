@@ -1,0 +1,18 @@
+# inform about sudo availability
+alias sudo='/bin/bash /etc/bash.sudobriefing'
+
+# ls aliases
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ll -A'
+
+# Set the PS1 and welcome the user
+PS1='${debian_chroot:+($debian_chroot)}$SL_USERNAME@$SL_PROJECT:\w\$ '
+
+echo "Hello $SL_USERNAME and welcome to your fully-featured terminal."
+echo "Have fun coding on the cloud."
+echo ""
+
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi

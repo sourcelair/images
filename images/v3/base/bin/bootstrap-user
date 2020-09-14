@@ -1,0 +1,19 @@
+#! /bin/bash
+
+set -ex
+
+#! /bin/bash
+
+set -ex
+
+mkdir -p /mnt/user/.ssh
+if [ ! -f /mnt/user/.ssh/id_rsa ]
+then
+    ssh-keygen -b 4096 -t rsa -C $SL_USERNAME@sluser.pro -f /mnt/user/.ssh/id_rsa -q -N ""
+fi
+
+git config --global user.name $SL_USERNAME
+git config --global user.email $SL_EMAIL
+git config --global push.default current
+git config --global pull.default current
+git config --global credential.helper store

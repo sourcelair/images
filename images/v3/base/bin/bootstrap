@@ -1,0 +1,16 @@
+#! /bin/bash
+# This should be called in the following way: bootstrap <scm> <language> <name> <version> <framework>
+# i.e. bootstrap git python my_app 27 django
+set -xe
+
+command_exists () {
+    type "$1" &> /dev/null ;
+}
+
+while [[ $# -ne 0 ]]; do
+    cmd=bootstrap-$1
+    shift
+    if command_exists $cmd; then
+        "$cmd" $@
+    fi
+done

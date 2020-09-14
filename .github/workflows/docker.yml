@@ -1,0 +1,21 @@
+name: Build and publish Docker images
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REGISTRY_HOST: ${{ secrets.DOCKER_REGISTRY_HOST }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Login to Digital Ocean Container Registry
+        run: doctl registry Login
+      - name: Build base image
+        run: ./bin/build v3/base
+      - name: Push base image
+        run: ./bin/push v3/base

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+echo -e "sudo is not available on SourceLair. Learn more at https://help.sourcelair.com/runtime/root/."

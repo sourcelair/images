@@ -1,0 +1,78 @@
+#! /usr/bin/env python
+
+import subprocess
+import sys
+
+from getpass import getpass
+
+
+PARAMETERS = [
+    ('user', False, 'Enter your FTP username, i.e. bob'),
+    ('password', True, 'Enter your FTP password, i.e. mysecretpass'),
+    ('url', False, 'Enter your FTP url, i.e. ftp://example.org'),
+]
+
+# Since `raw_input` has been renamed to `input` Python 3, we need to negotiate
+try:
+    _input = raw_input
+except NameError:
+    _input = input
+
+
+def get_git_config(config):
+    try:
+        return subprocess.check_output(['git', 'config', config]).strip()
+    except subprocess.CalledProcessError:
+        return ''
+
+
+def set_git_config(config, new_value):
+    return subprocess.check_output(
+        ['git', 'config', config, new_value])
+
+
+def get_parameter(scope, parameter, force_get):
+    name, is_secure, helper = parameter
+    config = '.'.join(['git-ftp', scope, name])
+    existing = get_git_config(config)
+
+    if force_get:
+        print('Current:', existing)
+    if force_get or existing == '':
+        print(helper)
+        read_fun = getpass if is_secure else _input
+        new_value = read_fun()
+        if new_value != '':
+            set_git_config(config, new_value)
+
+
+def deploy(scope):
+    ret = subprocess.call(['git', 'ftp', 'push', '--auto-init', '-s', scope])
+    if ret not in (4, 5):
+        sys.exit(ret)
+    return ret == 0
+
+
+def wrap(scope, force_get=False):
+    for parameter in PARAMETERS:
+        get_parameter(scope, parameter, force_get)
+
+    set_git_config('git-ftp.%s.syncroot' % scope, '.')
+
+    print('Deploying')
+    if deploy(scope):
+        return
+
+    print('Could not deploy, please check the added parameters again')
+    wrap(scope, True)
+
+
+if __name__ == '__main__':
+    SCOPE = 'sourcelair'
+    if len(sys.argv) > 1:
+        SCOPE = sys.argv[1]
+    try:
+        wrap(SCOPE)
+    except KeyboardInterrupt:
+        print('Exited')
+        sys.exit(1)

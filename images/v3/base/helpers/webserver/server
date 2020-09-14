@@ -1,0 +1,7 @@
+#! /bin/bash
+
+echo "Looks like the Web Server has not been configured yet"
+echo "Starting helper web server..."
+echo ""
+
+python -m http.server --directory=/usr/src/helpers/webserver --bind 0.0.0.0 ${PORT:-8000}

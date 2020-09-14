@@ -1,0 +1,9 @@
+[MASTER]
+# Make sure Pylint works nicely with virtualenvs
+init-hook="
+    from pylint_venv import inithook
+    inithook()"
+
+[MESSAGES CONTROL]
+# C0111 Missing docstring
+disable=C0111
