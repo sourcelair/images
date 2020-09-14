@@ -14,7 +14,7 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Login to Digital Ocean Container Registry
-        run: doctl registry Login
+        run: doctl registry login
       - name: Build base image
         run: ./bin/build v3/base
       - name: Push base image
