@@ -11,7 +11,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: images/v3/base
+          images: ghcr.io/sourcelair/images/v3/base
           tag-sha: true
           tag-edge: true
       - name: Login to GitHub Container Registry
