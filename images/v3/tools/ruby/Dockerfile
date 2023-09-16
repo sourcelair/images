@@ -1,0 +1,22 @@
+FROM tools_base
+
+ARG RUBY_VERSION=3.2.2
+ENV RUBY_VERSION=${RUBY_VERSION}
+
+ARG RUBY_DOWNLOAD_SHA256=4b352d0f7ec384e332e3e44cdbfdcd5ff2d594af3c8296b5636c710975149e23
+ENV RUBY_DOWNLOAD_SHA256=${RUBY_DOWNLOAD_SHA256}
+
+ARG RUBYGEMS_VERSION=3.4.19
+ENV RUBYGEMS_VERSION=${RUBYGEMS_VERSION}
+
+ARG BUNDLER_VERSION=2.4.19
+ENV BUNDLER_VERSION=${BUNDLER_VERSION}
+
+COPY scripts/0-install-ruby.sh ./
+RUN bash ./0-install-ruby.sh
+
+COPY scripts/1-install-rubygems.sh ./
+RUN bash ./1-install-rubygems.sh
+
+COPY scripts/2-install-bundler.sh ./
+RUN bash ./2-install-bundler.sh
