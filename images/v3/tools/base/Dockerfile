@@ -1,0 +1,11 @@
+FROM base
+
+ARG TOOL_PREFIX=/usr/local/share/tool
+ENV TOOL_PREFIX=${TOOL_PREFIX}
+
+ENV PATH=${PATH}:${TOOL_PREFIX}/bin
+ENV LD_LIBRARY_PATH=${TOOL_PREFIX}/lib
+
+RUN mkdir -p ${TOOL_PREFIX}
+
+WORKDIR /usr/src/tool
